@@ -79,19 +79,15 @@ void FenServeur::donneesRecues()
     QChar firstChar = consigne.at(0);
 
     if (firstChar == QChar('$')){
-       if (consigne== QString("$init")){
-            QString retour = tr("<em>Initialisation en cours</em>");
+     QString retour =  controlleurDeJeu(list);
 
 
-
-            FenServeur::dollarInit();
-            // attention pas terminé
             FenServeur::envoyerAquelqun(socket,retour);
 
 
 
         }
-}
+
 
 
 
@@ -162,6 +158,18 @@ void FenServeur::envoyerAquelqun(QTcpSocket *destinataire, const QString &messag
 
 
 }
+
+QString controlleurDeJeu(QStringList list){
+    QString retour;
+
+    if (consigne== QString("$init")){
+          retour = tr("<em>Initialisation en cours</em>");
+         FenServeur::dollarInit();
+         retour+="<br>";
+         retour+="<em>Initialisation terminée"
+    }
+}
+
 
 void FenServeur::dollarInit()
 {
