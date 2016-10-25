@@ -12,6 +12,8 @@ class FenServeur : public QWidget
     public:
         FenServeur();
         void envoyerATous(const QString &message);
+        void envoyerAquelqun(QTcpSocket *destinataire, const QString &message);
+        void dollarInit();
 
     private slots:
         void nouvelleConnexion();

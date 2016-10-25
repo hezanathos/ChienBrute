@@ -1,5 +1,6 @@
+//http://piratepad.net/chienbrute
 #include "FenServeur.h"
-
+#include "perso.h"
 FenServeur::FenServeur()
 {
     // Création et disposition des widgets de la fenêtre
@@ -69,14 +70,45 @@ void FenServeur::donneesRecues()
 
     // Si ces lignes s'exécutent, c'est qu'on a reçu tout le message : on peut le récupérer !
     QString message;
+	std::string messageString = message.toStdString();
     in >> message;
 
+    QStringList list = message.split(" ");
+    QString consigne = list.at(2);
 
+    QChar firstChar = consigne.at(0);
+
+    if (firstChar == QChar('$')){
+       if (consigne== QString("$init")){
+            QString retour = tr("<em>Initialisation en cours</em>");
+
+
+
+            FenServeur::dollarInit();
+            // attention pas terminé
+            FenServeur::envoyerAquelqun(socket,retour);
+
+
+
+        }
+}
+
+
+
+
+
+
+
+
+else
+{
     // 2 : on renvoie le message à tous les clients
     envoyerATous(message);
 
-    // 3 : remise de la taille du message à 0 pour permettre la réception des futurs messages
+}
     tailleMessage = 0;
+    // 3 : remise de la taille du message à 0 pour permettre la réception des futurs messages
+
 }
 
 void FenServeur::deconnexionClient()
@@ -110,5 +142,32 @@ void FenServeur::envoyerATous(const QString &message)
     {
         clients[i]->write(paquet);
     }
+ tailleMessage = 0;
+}
+void FenServeur::envoyerAquelqun(QTcpSocket *destinataire, const QString &message)
+{
+	// Préparation du paquet
+	QByteArray paquet;
+	QDataStream out(&paquet, QIODevice::WriteOnly);
+
+	out << (quint16)0; // On écrit 0 au début du paquet pour réserver la place pour écrire la taille
+	out << message; // On ajoute le message à la suite
+	out.device()->seek(0); // On se replace au début du paquet
+	out << (quint16)(paquet.size() - sizeof(quint16)); // On écrase le 0 qu'on avait réservé par la longueur du message
+
+
+    // Envoi du paquet préparé au bon clients connectés au serveur
+
+		destinataire->write(paquet);
+
 
 }
+
+void FenServeur::dollarInit()
+{
+
+Perso first(QString("hezanathos"));
+
+
+}
+
