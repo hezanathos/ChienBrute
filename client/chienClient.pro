@@ -7,6 +7,6 @@ DEPENDPATH += .
 INCLUDEPATH += .
 
 # Input
-HEADERS += FenClient.h
+HEADERS += FenClient.h perso.h
 FORMS += FenClient.ui
 SOURCES += FenClient.cpp main.cpp

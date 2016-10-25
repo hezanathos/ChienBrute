@@ -10,6 +10,8 @@ FenClient::FenClient()
     connect(socket, SIGNAL(disconnected()), this, SLOT(deconnecte()));
     connect(socket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(erreurSocket(QAbstractSocket::SocketError)));
 
+
+
     tailleMessage = 0;
 }
 

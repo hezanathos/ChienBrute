@@ -1,6 +1,8 @@
 //http://piratepad.net/chienbrute
 #include "FenServeur.h"
 #include "perso.h"
+#include <QDebug>
+
 FenServeur::FenServeur()
 {
     // Création et disposition des widgets de la fenêtre
@@ -13,7 +15,7 @@ FenServeur::FenServeur()
     layout->addWidget(boutonQuitter);
     setLayout(layout);
 
-    setWindowTitle(tr("ZeroChat - Serveur"));
+    setWindowTitle(tr("ChienBrute - Serveur"));
 
     // Gestion du serveur
     serveur = new QTcpServer(this);
@@ -79,7 +81,7 @@ void FenServeur::donneesRecues()
     QChar firstChar = consigne.at(0);
 
     if (firstChar == QChar('$')){
-     QString retour =  controlleurDeJeu(list);
+     QString retour =  FenServeur::controlleurDeJeu(list);
 
 
             FenServeur::envoyerAquelqun(socket,retour);
@@ -158,24 +160,44 @@ void FenServeur::envoyerAquelqun(QTcpSocket *destinataire, const QString &messag
 
 
 }
-
-QString controlleurDeJeu(QStringList list){
-    QString retour;
-
-    if (consigne== QString("$init")){
-          retour = tr("<em>Initialisation en cours</em>");
-         FenServeur::dollarInit();
-         retour+="<br>";
-         retour+="<em>Initialisation terminée"
-    }
+ QString FenServeur::dollarInit(QStringList list)
+{
+QString retour;
+Perso first(QString("hezanathos"));
+retour ="<em>Bienvenue au monde jeune"+first.getPseudo()+"</em>";
+retour+="<br>";
+retour ="<em>Voici les caractéristiques que dame nature a bien voulues t'accorder</em>";
+retour+="<br>";
+retour+=QString("<em>intelligence : %1</em>").arg(first.getIntelligence());
+retour+="<br>";
+retour+=QString("<em>intelligence : %1</em>").arg(first.getIntelligence());
+retour+="<br>";
+retour+=QString("<em>intelligence : %1</em>").arg(first.getIntelligence());
+retour+="<br>";
+retour+=QString("<em>intelligence : %1</em>").arg(first.getIntelligence());
+retour+="<br>";
+retour ="<em>Il semblerait qu'elle soit dans un mauvais jour !</em>";
+retour+="<br>";
+retour ="<em>Faudra faire avec ! </em>";
+retour+="<br>";
+return retour;
 }
-
-
-void FenServeur::dollarInit()
+QString FenServeur::controlleurDeJeu(QStringList list)
 {
 
-Perso first(QString("hezanathos"));
+    QString retour;
+    qDebug() << "Controlleur de jeu";
+    if (list.at(2)== QString("$init")){
+          retour = "<em>Initialisation en cours</em>";
+         retour+= FenServeur::dollarInit(list);
+         retour+="<br>";
+         retour+="<em>Initialisation terminée";
+    }
+    else retour =QString("commande inconnue :")+list.at(2);
 
-
+    return retour;
 }
+
+
+
 
