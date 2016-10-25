@@ -16,7 +16,7 @@ FenServeur::FenServeur()
 
     // Gestion du serveur
     serveur = new QTcpServer(this);
-    if (!serveur->listen(QHostAddress::Any, 50885)) // Démarrage du serveur sur toutes les IP disponibles et sur le port 50585
+    if (!serveur->listen(QHostAddress::Any, 58885)) // Démarrage du serveur sur toutes les IP disponibles et sur le port 50585
     {
         // Si le serveur n'a pas été démarré correctement
         etatServeur->setText(tr("Le serveur n'a pas pu être démarré. Raison :<br />") + serveur->errorString());
