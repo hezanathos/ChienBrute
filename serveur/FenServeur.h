@@ -3,7 +3,7 @@
 
 #include <QtWidgets>
 #include <QtNetwork>
-
+#include "perso.h"
 
 class FenServeur : public QWidget
 {
@@ -13,8 +13,9 @@ class FenServeur : public QWidget
         FenServeur();
         void envoyerATous(const QString &message);
         void envoyerAquelqun(QTcpSocket *destinataire, const QString &message);
-        static QString dollarInit(QStringList list);
-        static QString controlleurDeJeu(QStringList list);
+        QString dollarInit(QStringList list);
+         QString controlleurDeJeu(QStringList list);
+
 
     private slots:
         void nouvelleConnexion();
@@ -27,7 +28,9 @@ class FenServeur : public QWidget
 
         QTcpServer *serveur;
         QList<QTcpSocket *> clients;
+        QList<Perso> persos;
         quint16 tailleMessage;
+
 };
 
 #endif

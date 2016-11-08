@@ -164,22 +164,24 @@ void FenServeur::envoyerAquelqun(QTcpSocket *destinataire, const QString &messag
 {
 QString retour;
 Perso first(QString("hezanathos"));
-retour ="<em>Bienvenue au monde jeune"+first.getPseudo()+"</em>";
+persos << first;
+retour =QString("<em>Bienvenue au monde jeune "+first.getPseudo()+"</em>");
 retour+="<br>";
-retour ="<em>Voici les caractéristiques que dame nature a bien voulues t'accorder</em>";
-retour+="<br>";
-retour+=QString("<em>intelligence : %1</em>").arg(first.getIntelligence());
-retour+="<br>";
-retour+=QString("<em>intelligence : %1</em>").arg(first.getIntelligence());
+retour +="<em>Voici les caractéristiques que dame nature a bien voulues t'accorder : </em>";
 retour+="<br>";
 retour+=QString("<em>intelligence : %1</em>").arg(first.getIntelligence());
 retour+="<br>";
-retour+=QString("<em>intelligence : %1</em>").arg(first.getIntelligence());
+retour+=QString("<em>vitalité : %1</em>").arg(first.getVitalite());
 retour+="<br>";
-retour ="<em>Il semblerait qu'elle soit dans un mauvais jour !</em>";
+retour+=QString("<em>Agilité : %1</em>").arg(first.getAgilite());
 retour+="<br>";
-retour ="<em>Faudra faire avec ! </em>";
+retour+=QString("<em>Force : %1</em>").arg(first.getForce());
 retour+="<br>";
+retour +="<em>Il semblerait qu'elle soit dans un mauvais jour !</em>";
+retour+="<br>";
+retour +="<em>Faudra faire avec... </em>";
+retour+="<br>";
+qDebug() << retour;
 return retour;
 }
 QString FenServeur::controlleurDeJeu(QStringList list)
@@ -188,7 +190,7 @@ QString FenServeur::controlleurDeJeu(QStringList list)
     QString retour;
     qDebug() << "Controlleur de jeu";
     if (list.at(2)== QString("$init")){
-          retour = "<em>Initialisation en cours</em>";
+          retour = "<em>Initialisation en cours</em><br>";
          retour+= FenServeur::dollarInit(list);
          retour+="<br>";
          retour+="<em>Initialisation terminée";

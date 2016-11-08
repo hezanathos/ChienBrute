@@ -2,18 +2,24 @@
 #include <stdlib.h>
 #include <time.h>
 Perso::Perso(QString nom)
-{
-    int total = 100;
+{   qDebug() << "constr";
+    int total = 0;
     srand(time(NULL));
 
     vitalite = rand() % 100 + 1;
-    total -= vitalite;
-    agilite = rand() % total + 1;
-    total -= agilite;
-    force = rand() % total + 1;
-    total -= force;
-    intelligence = total;
-    pseudo = nom;
+    total += vitalite;
+    agilite = rand() % 100 + 1;
+    total += agilite;
+    force = rand() % 100 + 1;
+    total += force;
+    intelligence = rand() % 100 + 1;
+    total += intelligence;
+    qDebug() << intelligence;
+    agilite = agilite * 100 / total ;
+    force = force * 100 / total ;
+    intelligence = intelligence * 100 / total ;
+    vitalite = vitalite * 100 / total ;
+
 }
 
 void Perso::setVitalite(int vitalite){this->vitalite=vitalite;}

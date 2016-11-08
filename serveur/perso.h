@@ -1,7 +1,7 @@
 #ifndef DEF_PERSONNAGE
 #define DEF_PERSONNAGE
 #include <QtWidgets>
-
+#include <QtNetwork>
 class Perso
 {
 private :
@@ -10,6 +10,7 @@ private :
     int force;
     int intelligence;
     QString pseudo;
+
 
 public:
     Perso(QString);
