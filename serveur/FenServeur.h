@@ -14,6 +14,7 @@ class FenServeur : public QWidget
         void envoyerATous(const QString &message);
         void envoyerAquelqun(QTcpSocket *destinataire, const QString &message);
         QString dollarInit(QStringList list);
+        QString dollarCombat(QStringList list);
          QString controlleurDeJeu(QStringList list);
 
 

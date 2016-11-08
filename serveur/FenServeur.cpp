@@ -163,7 +163,16 @@ void FenServeur::envoyerAquelqun(QTcpSocket *destinataire, const QString &messag
  QString FenServeur::dollarInit(QStringList list)
 {
 QString retour;
-Perso first(QString("hezanathos"));
+
+for (int i = 0; i<persos.size();i++){
+
+
+    if (persos.at(i).getPseudo() == list.at(0)) {
+      retour = "un seul personnage par compte jeune sacripan ( ou bien vil faquin )!" ;
+       return retour;
+    }
+}
+Perso first(list.at(0));
 persos << first;
 retour =QString("<em>Bienvenue au monde jeune "+first.getPseudo()+"</em>");
 retour+="<br>";
@@ -184,6 +193,55 @@ retour+="<br>";
 qDebug() << retour;
 return retour;
 }
+
+ QString FenServeur::dollarCombat(QStringList list)
+{
+ Perso *perso1;
+ Perso *perso2;
+QString retour;
+for (int i = 0; i<persos.size();i++){
+
+
+    if (persos.at(i).getPseudo() == list.at(3)) {
+        perso2 = &persos[i];
+
+    }
+    if (persos.at(i).getPseudo() == list.at(0)) {
+        perso1 = &persos[i]  ;
+
+    }
+}
+
+if ( perso1->getPseudo() == perso2->getPseudo()){
+
+    perso1->setPv(perso1->getPv()-500);
+    retour = "Tu t'es tapé tout seul. Vraiement très con.";
+    retour+="<br>";
+}
+int i = 0;
+retour = QString("Début du combat");
+retour+="<br>";
+while (perso1->getPv()>0 && perso2->getPv()>0)
+{ retour += QString("round ") + i + QString("vie de ") + perso1->getPseudo() + " = " + perso1->getPv();
+retour += QString(" vie de ") + perso2->getPseudo() + " = " + perso2->getPv();
+retour+="<br>";
+perso1->setPv(perso1->getPv()- perso2->getForce());
+perso2->setPv(perso1->getPv()- perso1->getForce());
+
+
+
+}
+
+retour += QString("Fin du combat");
+retour+="<br>";
+return retour;
+ }
+
+
+
+
+
+
 QString FenServeur::controlleurDeJeu(QStringList list)
 {
 
@@ -194,6 +252,36 @@ QString FenServeur::controlleurDeJeu(QStringList list)
          retour+= FenServeur::dollarInit(list);
          retour+="<br>";
          retour+="<em>Initialisation terminée";
+    }
+    else if (list.at(2)== QString("$combat")){
+        if (list.size() > 3) {
+
+
+            for (int i = 0; i<persos.size();i++){
+
+
+                if (persos.at(i).getPseudo() == list.at(3)) {
+                    retour = "<em>Combat en cours</em><br>";
+                  retour+= FenServeur::dollarCombat(list);
+
+                   return retour;
+                }
+            }
+
+
+
+        retour = "<em>Entrez un pseudo inscrit au grand livre des Ages !</em><br>";
+
+
+
+
+
+
+
+
+
+        }else retour =QString("Entrez un adversaire");
+
     }
     else retour =QString("commande inconnue :")+list.at(2);
 

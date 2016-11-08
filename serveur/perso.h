@@ -9,6 +9,7 @@ private :
     int agilite;
     int force;
     int intelligence;
+    int pv;
     QString pseudo;
 
 
@@ -19,11 +20,13 @@ public:
    void setForce(int);
    void setIntelligence(int);
    void setPseudo(QString);
+   void setPv(int);
 
-   int getVitalite();
-   int getAgilite();
-   int getForce();
-   int getIntelligence ();
-   QString getPseudo();
+   int getVitalite()const;
+   int getAgilite()const;
+   int getForce()const;
+   int getIntelligence ()const;
+   int getPv () const;
+   QString getPseudo() const;
 };
 #endif
