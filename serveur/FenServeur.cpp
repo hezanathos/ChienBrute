@@ -261,7 +261,7 @@ QString param = "<strong>"+list.at(3)+"</strong>";
             for (int i = 0; i<persos.size();i++){
 
 
-                if (persos.at(i).getPseudo() == list.at(3)) {
+                if (persos.at(i).getPseudo() == param) {
                     retour = "<em>Combat en cours</em><br>";
                   retour+= FenServeur::dollarCombat(list);
 
