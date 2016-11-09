@@ -1,11 +1,11 @@
-//http://piratepad.net/chienbrute
+ï»¿//http://piratepad.net/chienbrute
 #include "FenServeur.h"
 #include "perso.h"
 #include <QDebug>
 
 FenServeur::FenServeur()
 {
-    // Création et disposition des widgets de la fenêtre
+    // CrÃ©ation et disposition des widgets de la fenÃªtre
     etatServeur = new QLabel;
     boutonQuitter = new QPushButton(tr("Quitter"));
     connect(boutonQuitter, SIGNAL(clicked()), qApp, SLOT(quit()));
@@ -19,16 +19,19 @@ FenServeur::FenServeur()
 
     // Gestion du serveur
     serveur = new QTcpServer(this);
-    if (!serveur->listen(QHostAddress::Any, 58885)) // Démarrage du serveur sur toutes les IP disponibles et sur le port 50585
+    if (!serveur->listen(QHostAddress::Any, 58885)) // DÃ©marrage du serveur sur toutes les IP disponibles et sur le port 50585
     {
-        // Si le serveur n'a pas été démarré correctement
-        etatServeur->setText(tr("Le serveur n'a pas pu être démarré. Raison :<br />") + serveur->errorString());
+        // Si le serveur n'a pas Ã©tÃ© dÃ©marrÃ© correctement
+        etatServeur->setText(tr("Le serveur n'a pas pu Ãªtre dÃ©marrÃ©. Raison :<br />") + serveur->errorString());
     }
     else
     {
-        // Si le serveur a été démarré correctement
-        etatServeur->setText(tr("Le serveur a été démarré sur le port <strong>") + QString::number(serveur->serverPort()) + tr("</strong>.<br />Des clients peuvent maintenant se connecter."));
-        connect(serveur, SIGNAL(newConnection()), this, SLOT(nouvelleConnexion()));
+        // Si le serveur a Ã©tÃ© dÃ©marrÃ© correctement
+        QString a = QString("Le serveur a Ã©tÃ© dÃ©marr&eacute; sur le port <strong>") + QString::number(serveur->serverPort()) + "</strong>.<br />Des clients peuvent maintenant se connecter.";
+
+
+        etatServeur->setText(a);
+                    connect(serveur, SIGNAL(newConnection()), this, SLOT(nouvelleConnexion()));
     }
 
     tailleMessage = 0;
@@ -47,30 +50,30 @@ void FenServeur::nouvelleConnexion()
 
 void FenServeur::donneesRecues()
 {
-    // 1 : on reçoit un paquet (ou un sous-paquet) d'un des clients
+    // 1 : on reÃ§oit un paquet (ou un sous-paquet) d'un des clients
 
-    // On détermine quel client envoie le message (recherche du QTcpSocket du client)
+    // On dÃ©termine quel client envoie le message (recherche du QTcpSocket du client)
     QTcpSocket *socket = qobject_cast<QTcpSocket *>(sender());
-    if (socket == 0) // Si par hasard on n'a pas trouvé le client à l'origine du signal, on arrête la méthode
+    if (socket == 0) // Si par hasard on n'a pas trouvÃ© le client Ã  l'origine du signal, on arrÃªte la mÃ©thode
         return;
 
-    // Si tout va bien, on continue : on récupère le message
+    // Si tout va bien, on continue : on rÃ©cupÃ¨re le message
     QDataStream in(socket);
 
-    if (tailleMessage == 0) // Si on ne connaît pas encore la taille du message, on essaie de la récupérer
+    if (tailleMessage == 0) // Si on ne connaÃ®t pas encore la taille du message, on essaie de la rÃ©cupÃ©rer
     {
-        if (socket->bytesAvailable() < (int)sizeof(quint16)) // On n'a pas reçu la taille du message en entier
+        if (socket->bytesAvailable() < (int)sizeof(quint16)) // On n'a pas reÃ§u la taille du message en entier
              return;
 
-        in >> tailleMessage; // Si on a reçu la taille du message en entier, on la récupère
+        in >> tailleMessage; // Si on a reÃ§u la taille du message en entier, on la rÃ©cupÃ¨re
     }
 
-    // Si on connaît la taille du message, on vérifie si on a reçu le message en entier
-    if (socket->bytesAvailable() < tailleMessage) // Si on n'a pas encore tout reçu, on arrête la méthode
+    // Si on connaÃ®t la taille du message, on vÃ©rifie si on a reÃ§u le message en entier
+    if (socket->bytesAvailable() < tailleMessage) // Si on n'a pas encore tout reÃ§u, on arrÃªte la mÃ©thode
         return;
 
 
-    // Si ces lignes s'exécutent, c'est qu'on a reçu tout le message : on peut le récupérer !
+    // Si ces lignes s'exÃ©cutent, c'est qu'on a reÃ§u tout le message : on peut le rÃ©cupÃ©rer !
     QString message;
 	std::string messageString = message.toStdString();
     in >> message;
@@ -100,22 +103,22 @@ void FenServeur::donneesRecues()
 
 else
 {
-    // 2 : on renvoie le message à tous les clients
+    // 2 : on renvoie le message Ã  tous les clients
     envoyerATous(message);
 
 }
     tailleMessage = 0;
-    // 3 : remise de la taille du message à 0 pour permettre la réception des futurs messages
+    // 3 : remise de la taille du message Ã  0 pour permettre la rÃ©ception des futurs messages
 
 }
 
 void FenServeur::deconnexionClient()
 {
-    envoyerATous(tr("<em>Un client vient de se déconnecter</em>"));
+    envoyerATous(tr("<em>Un client vient de se dÃ©connecter</em>"));
 
-    // On détermine quel client se déconnecte
+    // On dÃ©termine quel client se dÃ©connecte
     QTcpSocket *socket = qobject_cast<QTcpSocket *>(sender());
-    if (socket == 0) // Si par hasard on n'a pas trouvé le client à l'origine du signal, on arrête la méthode
+    if (socket == 0) // Si par hasard on n'a pas trouvÃ© le client Ã  l'origine du signal, on arrÃªte la mÃ©thode
         return;
 
     clients.removeOne(socket);
@@ -125,17 +128,17 @@ void FenServeur::deconnexionClient()
 
 void FenServeur::envoyerATous(const QString &message)
 {
-    // Préparation du paquet
+    // PrÃ©paration du paquet
     QByteArray paquet;
     QDataStream out(&paquet, QIODevice::WriteOnly);
 
-    out << (quint16) 0; // On écrit 0 au début du paquet pour réserver la place pour écrire la taille
-    out << message; // On ajoute le message à la suite
-    out.device()->seek(0); // On se replace au début du paquet
-    out << (quint16) (paquet.size() - sizeof(quint16)); // On écrase le 0 qu'on avait réservé par la longueur du message
+    out << (quint16) 0; // On Ã©crit 0 au dÃ©but du paquet pour rÃ©server la place pour Ã©crire la taille
+    out << message; // On ajoute le message Ã  la suite
+    out.device()->seek(0); // On se replace au dÃ©but du paquet
+    out << (quint16) (paquet.size() - sizeof(quint16)); // On Ã©crase le 0 qu'on avait rÃ©servÃ© par la longueur du message
 
 
-    // Envoi du paquet préparé à tous les clients connectés au serveur
+    // Envoi du paquet prÃ©parÃ© Ã  tous les clients connectÃ©s au serveur
     for (int i = 0; i < clients.size(); i++)
     {
         clients[i]->write(paquet);
@@ -144,17 +147,17 @@ void FenServeur::envoyerATous(const QString &message)
 }
 void FenServeur::envoyerAquelqun(QTcpSocket *destinataire, const QString &message)
 {
-	// Préparation du paquet
+	// PrÃ©paration du paquet
 	QByteArray paquet;
 	QDataStream out(&paquet, QIODevice::WriteOnly);
 
-	out << (quint16)0; // On écrit 0 au début du paquet pour réserver la place pour écrire la taille
-	out << message; // On ajoute le message à la suite
-	out.device()->seek(0); // On se replace au début du paquet
-	out << (quint16)(paquet.size() - sizeof(quint16)); // On écrase le 0 qu'on avait réservé par la longueur du message
+	out << (quint16)0; // On Ã©crit 0 au dÃ©but du paquet pour rÃ©server la place pour Ã©crire la taille
+	out << message; // On ajoute le message Ã  la suite
+	out.device()->seek(0); // On se replace au dÃ©but du paquet
+	out << (quint16)(paquet.size() - sizeof(quint16)); // On Ã©crase le 0 qu'on avait rÃ©servÃ© par la longueur du message
 
 
-    // Envoi du paquet préparé au bon clients connectés au serveur
+    // Envoi du paquet prÃ©parÃ© au bon clients connectÃ©s au serveur
 
 		destinataire->write(paquet);
 
@@ -176,13 +179,13 @@ Perso first(list.at(0));
 persos << first;
 retour =QString("<em>Bienvenue au monde jeune "+first.getPseudo()+"</em>");
 retour+="<br>";
-retour +="<em>Voici les caractéristiques que dame nature a bien voulues t'accorder : </em>";
+retour +="<em>Voici les caractÃ©ristiques que dame nature a bien voulues t'accorder : </em>";
 retour+="<br>";
 retour+=QString("<em>intelligence : %1</em>").arg(first.getIntelligence());
 retour+="<br>";
-retour+=QString("<em>vitalité : %1</em>").arg(first.getVitalite());
+retour+=QString("<em>vitalitÃ© : %1</em>").arg(first.getVitalite());
 retour+="<br>";
-retour+=QString("<em>Agilité : %1</em>").arg(first.getAgilite());
+retour+=QString("<em>AgilitÃ© : %1</em>").arg(first.getAgilite());
 retour+="<br>";
 retour+=QString("<em>Force : %1</em>").arg(first.getForce());
 retour+="<br>";
@@ -216,23 +219,23 @@ for (int i = 0; i<persos.size();i++){
 if ( perso1->getPseudo() == perso2->getPseudo()){
 
     perso1->setPv(perso1->getPv()-500);
-    retour = "Tu t'es tapé tout seul. Vraiement très con.";
+    retour = "Tu t'es tapÃ© tout seul. Vraiement trÃ¨s con.";
     retour+="<br>";
-}
+}else{
 int i = 0;
-retour = QString("Début du combat");
+retour = QString("DÃ©but du combat");
 retour+="<br>";
 while (perso1->getPv()>0 && perso2->getPv()>0)
-{ retour += QString("round ") + i + QString("vie de ") + perso1->getPseudo() + " = " + perso1->getPv();
-retour += QString(" vie de ") + perso2->getPseudo() + " = " + perso2->getPv();
+{ retour += QString("round ") + QString::number(i) + QString(" vie de ") + perso1->getPseudo() + " = " + QString::number(perso1->getPv());
+retour += QString(" vie de ") + perso2->getPseudo() + " = " + QString::number(perso2->getPv());
 retour+="<br>";
 perso1->setPv(perso1->getPv()- perso2->getForce());
-perso2->setPv(perso1->getPv()- perso1->getForce());
-
+perso2->setPv(perso2->getPv()- perso1->getForce());
+i++;
 
 
 }
-
+}
 retour += QString("Fin du combat");
 retour+="<br>";
 return retour;
@@ -252,7 +255,7 @@ QString FenServeur::controlleurDeJeu(QStringList list)
           retour = "<em>Initialisation en cours</em><br>";
          retour+= FenServeur::dollarInit(list);
          retour+="<br>";
-         retour+="<em>Initialisation terminée";
+         retour+="<em>Initialisation terminÃ©e";
     }
     else if (list.at(2)== QString("$combat")){
         if (list.size() > 3) {
@@ -266,6 +269,8 @@ QString param = "<strong>"+list.at(3)+"</strong>";
                   retour+= FenServeur::dollarCombat(list);
 
                    return retour;
+                }else{
+                    
                 }
             }
 
