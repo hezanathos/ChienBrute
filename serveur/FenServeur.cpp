@@ -199,10 +199,11 @@ return retour;
  Perso *perso1;
  Perso *perso2;
 QString retour;
+QString param = "<strong>"+list.at(3)+"</strong>";
 for (int i = 0; i<persos.size();i++){
 
 
-    if (persos.at(i).getPseudo() == list.at(3)) {
+    if (persos.at(i).getPseudo() == param) {
         perso2 = &persos[i];
 
     }
@@ -256,7 +257,7 @@ QString FenServeur::controlleurDeJeu(QStringList list)
     else if (list.at(2)== QString("$combat")){
         if (list.size() > 3) {
 
-
+QString param = "<strong>"+list.at(3)+"</strong>";
             for (int i = 0; i<persos.size();i++){
 
 
